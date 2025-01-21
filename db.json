@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "test@test.com",
+      "password": "test123"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "0976",
+      "title": "JAVA",
+      "description": "TACHE DE FOND",
+      "status": "inProgress",
+      "date": "2025-01-21T09:07:40.731Z"
+    },
+    {
+      "id": "79e1",
+      "title": "PHP",
+      "description": "TACHE DE FOND",
+      "status": "todo",
+      "date": "2025-01-21T10:19:33.397Z"
+    }
+  ]
+}

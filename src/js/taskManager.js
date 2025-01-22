@@ -218,8 +218,8 @@ export class TaskManager {
         
         div.innerHTML = `
             <div class="pr-16">
-                <h4 class="font-medium text-gray-900">${task.title}</h4>
-                <p class="text-sm text-gray-600 mt-1">${task.description}</p>
+                <h4 class="font-medium text-gray-900 task-title" ondblclick="this.contentEditable=true;this.focus()">${task.title}</h4>
+                <p class="text-sm text-gray-600 mt-1 task-description" ondblclick="this.contentEditable=true;this.focus()">${task.description}</p>
                 <small class="text-xs text-gray-500 mt-2 block">${new Date(task.date).toLocaleDateString()}</small>
             </div>
             <div class="absolute top-4 right-4 flex space-x-2">
@@ -236,6 +236,40 @@ export class TaskManager {
             </div>
         `;
 
+        const titleElement = div.querySelector('.task-title');
+        const descriptionElement = div.querySelector('.task-description');
+
+        // Gestion de l'édition du titre
+        titleElement.addEventListener('blur', async () => {
+            const newTitle = titleElement.textContent;
+            if (newTitle !== task.title) {
+                await this.handleEditTaskSubmit(task.id, {
+                    ...task,
+                    title: newTitle
+                });
+            }
+            titleElement.contentEditable = false;
+        });
+
+        titleElement.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                titleElement.blur();
+            }
+        });
+
+        // Gestion de l'édition de la description
+        descriptionElement.addEventListener('blur', async () => {
+            const newDescription = descriptionElement.textContent;
+            if (newDescription !== task.description) {
+                await this.handleEditTaskSubmit(task.id, {
+                    ...task,
+                    description: newDescription
+                });
+            }
+            descriptionElement.contentEditable = false;
+        });
+
         const editBtn = div.querySelector('.edit-task-btn');
         const deleteBtn = div.querySelector('.delete-task-btn');
 
@@ -247,6 +281,24 @@ export class TaskManager {
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             this.showDeleteModal(task.id);
+        });
+
+        // Désactiver le drag quand on édite
+        titleElement.addEventListener('dblclick', (e) => {
+            div.draggable = false;
+        });
+
+        descriptionElement.addEventListener('dblclick', (e) => {
+            div.draggable = false;
+        });
+
+        // Réactiver le drag quand on finit d'éditer
+        titleElement.addEventListener('blur', () => {
+            div.draggable = true;
+        });
+
+        descriptionElement.addEventListener('blur', () => {
+            div.draggable = true;
         });
         
         return div;

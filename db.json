@@ -9,7 +9,7 @@
   "tasks": [
     {
       "id": "0976",
-      "title": "JAVA",
+      "title": "JS",
       "description": "TACHE DE FOND",
       "status": "todo",
       "date": "2025-01-21T09:07:40.731Z"
@@ -25,14 +25,8 @@
       "id": "7157",
       "title": "UML",
       "description": "tache de fond",
-      "status": "todo",
+      "status": "done",
       "date": "2025-01-21T10:19:33.397Z"
-    },
-    {
-      "id": "ee6f",
-      "title": "DATA",
-      "description": "TACHE DE FOND",
-      "status": "todo"
     }
   ]
 }

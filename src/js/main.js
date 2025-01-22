@@ -1,10 +1,12 @@
 import { Auth } from './auth.js';
 import { TaskManager } from './taskManager.js';
+import { DarkMode } from './darkMode.js';
 
 class App {
     constructor() {
         this.auth = new Auth();
         this.taskManager = null;
+        this.darkMode = new DarkMode();
         this.init();
     }
 
@@ -43,7 +45,7 @@ class App {
         });
     }
 
-    checkAuthState() { 
+    checkAuthState() {
         if (this.auth.checkAuth()) {
             this.showMainPage();
         } else {
@@ -65,7 +67,6 @@ class App {
         }
         await this.taskManager.loadTasks();
     }
-
 }
 
 // Initialiser l'application

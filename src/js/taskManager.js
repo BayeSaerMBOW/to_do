@@ -115,6 +115,7 @@ export class TaskManager {
         }
     }
 
+   
     setupDragAndDrop() {
         document.addEventListener('dragstart', (e) => {
             if (e.target.classList.contains('task-card')) {
@@ -133,15 +134,27 @@ export class TaskManager {
         containers.forEach(container => {
             container.addEventListener('dragover', (e) => {
                 e.preventDefault();
+                const draggable = document.querySelector('.dragging');
+                if (!draggable) return;
+
+                const afterElement = this.getDragAfterElement(container, e.clientY);
+                if (afterElement) {
+                    container.insertBefore(draggable, afterElement);
+                } else {
+                    container.appendChild(draggable);
+                }
             });
 
             container.addEventListener('drop', async (e) => {
                 e.preventDefault();
                 const taskId = e.dataTransfer.getData('text/plain');
                 const newStatus = container.parentElement.dataset.status;
+                const newPosition = Array.from(container.children).findIndex(
+                    child => child.dataset.taskId === taskId
+                );
                 
                 try {
-                    await this.updateTaskStatus(taskId, newStatus);
+                    await this.updateTaskPosition(taskId, newStatus, newPosition);
                     this.loadTasks();
                 } catch (error) {
                     console.error('Erreur lors du déplacement de la tâche:', error);
@@ -149,6 +162,39 @@ export class TaskManager {
             });
         });
     }
+
+    getDragAfterElement(container, y) {
+        const draggableElements = [
+            ...container.querySelectorAll('.task-card:not(.dragging)')
+        ];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+
+            if (offset < 0 && offset > closest.offset) {
+                return { offset, element: child };
+            }
+            return closest;
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    async updateTaskPosition(taskId, newStatus, position) {
+        try {
+            await api.updateTask(taskId, { 
+                status: newStatus,
+                position: position 
+            });
+            const task = this.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.status = newStatus;
+                task.position = position;
+            }
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de la position:', error);
+        }
+    }
+
 
     setupSearch() {
         const searchInput = document.getElementById('searchInput');
@@ -210,7 +256,7 @@ export class TaskManager {
         });
     }
 
-    createTaskElement(task) {
+ createTaskElement(task) {
         const div = document.createElement('div');
         div.className = 'task-card bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-3 cursor-move hover:shadow-md transition-shadow duration-200 relative';
         div.draggable = true;

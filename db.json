@@ -12,21 +12,24 @@
       "title": "JS",
       "description": "TACHE DE FOND",
       "status": "todo",
-      "date": "2025-01-21T09:07:40.731Z"
+      "date": "2025-01-21T09:07:40.731Z",
+      "position": 1
     },
     {
       "id": "79e1",
       "title": "PHP",
-      "description": "TACHE DE FON",
-      "status": "todo",
-      "date": "2025-01-21T10:19:33.397Z"
+      "description": "TACHE DE FONds",
+      "status": "inProgress",
+      "date": "2025-01-21T10:19:33.397Z",
+      "position": 1
     },
     {
       "id": "7157",
       "title": "UML",
       "description": "tache de fond",
-      "status": "done",
-      "date": "2025-01-21T10:19:33.397Z"
+      "status": "todo",
+      "date": "2025-01-21T10:19:33.397Z",
+      "position": 1
     }
   ]
 }

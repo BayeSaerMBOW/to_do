@@ -66,19 +66,6 @@ class App {
         await this.taskManager.loadTasks();
     }
 
-    showAddTaskModal() {
-        const title = prompt('Titre de la tâche:');
-        const description = prompt('Description de la tâche:');
-        
-        if (title && description) {
-            this.taskManager.addTask({
-                title,
-                description,
-                status: 'todo',
-                date: new Date().toISOString()
-            });
-        }
-    }
 }
 
 // Initialiser l'application
